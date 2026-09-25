@@ -12,6 +12,13 @@
 #include "Seven_Segment.h"
 #include "Scankey.h"           // Device header
 
+// define sound
+#define P125ms 125000
+#define P250ms 250000
+#define P500ms 500000
+#define P1S 	1000000
+
+
 // display an integer on four 7-segment LEDs
 void Display_7seg(uint16_t value)
 {
@@ -75,6 +82,7 @@ void Buzz(int number)
 
 void gpio_display(int s)
 {
+	// calculate decimal to binary
 	PC15 = (s & 0x01) ? 0 : 1; 
 	PC14 = (s & 0x02) ? 0 : 1;
 	PC13 = (s & 0x04) ? 0 : 1; 
@@ -129,6 +137,24 @@ void ex3_2(void)
 	}
 }
 
+void playambulance(void);
+void playpolicehorn(void);
+void playlilbee(void);
+
+void ex3_3(void)
+{
+	while (1)
+	{
+		int s = ScanKey();
+		if (s!= 0 && s == 4 || s == 5 || s == 6)
+		{
+				if ( s == 4) playambulance();
+				else if (s == 5) playpolicehorn();
+				else if (s == 6) playlilbee();
+				else continue;
+		}
+	}
+}
 
 int main(void)
 {
@@ -138,7 +164,7 @@ int main(void)
 	 OpenKeyPad();       // for keypad
    buzz_init();
 	 GPIO_init();
- 	 ex3_1();
+ 	 //ex3_1();
 	 //ex3_2();
-	
+		ex3_3();
 }
