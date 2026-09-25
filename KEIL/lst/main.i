@@ -850,6 +850,8 @@ extern __attribute__((__nothrow__)) __attribute__((__const__)) double trunc(doub
 extern __attribute__((__nothrow__)) __attribute__((__const__)) float truncf(float );
 __attribute__((__nothrow__)) long double truncl(long double );
 # 9 "../main.c" 2
+# 1 "C:\\Users\\elliot\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 10 "../main.c" 2
 # 1 "../../../../Library/Device/Nuvoton/NUC100Series/Include\\NUC100Series.h" 1
 # 52 "../../../../Library/Device/Nuvoton/NUC100Series/Include\\NUC100Series.h"
 typedef enum IRQn
@@ -2549,13 +2551,13 @@ void CLK_DisableSysTick(void);
 void ACMP_Open(ACMP_T *, uint32_t u32ChNum, uint32_t u32NegSrc, uint32_t u32HysteresisEn);
 void ACMP_Close(ACMP_T *, uint32_t u32ChNum);
 # 11127 "../../../../Library/Device/Nuvoton/NUC100Series/Include\\NUC100Series.h" 2
-# 10 "../main.c" 2
-# 1 "..\\MCU_init.h" 1
 # 11 "../main.c" 2
+# 1 "..\\MCU_init.h" 1
+# 12 "../main.c" 2
 # 1 "../../../../Library/Nu-LB-NUC140/Include\\SYS_init.h" 1
 # 446 "../../../../Library/Nu-LB-NUC140/Include\\SYS_init.h"
 extern void SYS_Init(void);
-# 12 "../main.c" 2
+# 13 "../main.c" 2
 # 1 "../../../../Library/Nu-LB-NUC140/Include\\Seven_Segment.h" 1
 
 
@@ -2563,7 +2565,7 @@ extern void SYS_Init(void);
 extern void OpenSevenSegment(void);
 extern void ShowSevenSegment(uint8_t no, uint8_t number);
 extern void CloseSevenSegment(void);
-# 13 "../main.c" 2
+# 14 "../main.c" 2
 # 1 "../../../../Library/Nu-LB-NUC140/Include\\Scankey.h" 1
 
 
@@ -2571,7 +2573,24 @@ extern void CloseSevenSegment(void);
 void OpenKeyPad(void);
 void CloseKeyPad(void);
 uint8_t ScanKey(void);
-# 14 "../main.c" 2
+# 15 "../main.c" 2
+# 24 "../main.c"
+void Display_7seg(uint16_t value);
+void Display_7seg_digit(uint16_t value);
+void GPIO_init();
+void buzz_init();
+void Buzz(int number);
+void gpio_display(int s);
+uint16_t show_number(int s);
+void ex3_1(void);
+void ex3_2(void);
+void playmusic(int tone[], int song[], int pitch[], int length);
+void playlilbee(int s);
+void playpolicehorn(int s);
+void alldown(void);
+void pauseall(void);
+_Bool checkControl(void);
+
 
 
 void Display_7seg(uint16_t value)
@@ -2636,6 +2655,7 @@ void Buzz(int number)
 
 void gpio_display(int s)
 {
+
  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))) = (s & 0x01) ? 0 : 1;
  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))) = (s & 0x02) ? 0 : 1;
  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))) = (s & 0x04) ? 0 : 1;
@@ -2690,6 +2710,132 @@ void ex3_2(void)
  }
 }
 
+_Bool checkControl(void)
+{
+ int s = ScanKey();
+ if (s == 9)
+ {
+  alldown();
+  return 1;
+ }
+ if (s == 8)
+ {
+  pauseall();
+  while(1)
+  {
+   CLK_SysTickDelay(10000);
+   if(s == 9)
+   {
+    alldown();
+    return 1;
+   }
+   if (s == 8)
+   {
+    CLK_SysTickDelay(300000);
+    return 0;
+   }
+  }
+ }
+ return 0;
+}
+
+
+void playmusic(int tone[], int song[], int pitch[], int length)
+{
+  int i , j , count = 0;
+
+  for(i = 0; i < length; i++)
+  {
+        if (checkControl()) return;
+
+    count=pitch[i]/(2*tone[song[i]-1]);
+
+    for(j=0; j<count; j++)
+    {
+      if ((j%20) == 0)
+      {
+       if (checkControl()) return;
+      }
+      (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=0;
+            CLK_SysTickDelay(tone[song[i]-1]);
+            (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=1;
+            CLK_SysTickDelay(tone[song[i]-1]);
+        }
+        CLK_SysTickDelay(1000);
+    }
+}
+
+void playlilbee(int s)
+{
+  int tone[7]={956, 851, 758, 716, 637, 568, 506};
+  int song[13]={5, 3, 3, 4, 2, 2, 1, 2, 3, 4, 5, 5, 5};
+  int pitch[13]={250000, 250000, 500000, 250000, 250000, 500000,
+               250000, 250000, 250000, 250000, 250000, 250000, 500000};
+
+  int length = sizeof(song) / sizeof(song[0]);
+
+
+
+  playmusic(tone, song, pitch, length);
+}
+
+void playpolicehorn(int s)
+{
+ int tone[] = {625,500};
+ int song[] = {1,2,1,2,1,2,1,2};
+ int pitch[] ={250000, 250000, 250000, 250000, 250000, 250000, 250000, 250000};
+
+ int length = sizeof(song) / sizeof(song[0]);
+
+
+
+ playmusic(tone, song, pitch, length);
+}
+
+
+void playambulance(int s)
+{
+ int tone[] = {833, 625};
+ int song[] = {1, 2, 1, 2, 1, 2, 1, 2};
+ int pitch[] = {500000, 500000, 500000, 500000, 500000, 500000, 500000, 500000};
+
+
+
+
+
+ int length = sizeof(song) / sizeof(song[0]);
+
+ playmusic(tone, song, pitch, length);
+
+}
+
+void pauseall(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2)))) = 1;
+}
+
+void alldown(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2)))) = 1;
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))) = 1;
+}
+
+void ex3_3(void)
+{
+ while (1)
+ {
+  int s = ScanKey();
+  if (s != 0 && s == 4 || s == 5 || s == 6)
+  {
+    if ( s == 4) playambulance(s);
+    else if (s == 5) playpolicehorn(s);
+    else if (s == 6) playlilbee(s);
+    else if (s == 8) pauseall();
+    else if (s == 9) alldown();
+    else continue;
+  }
+ }
+}
 
 int main(void)
 {
@@ -2699,7 +2845,7 @@ int main(void)
   OpenKeyPad();
    buzz_init();
   GPIO_init();
-   ex3_1();
 
 
+  ex3_3();
 }

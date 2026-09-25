@@ -6,6 +6,7 @@
 //
 #include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
 #include "NUC100Series.h"
 #include "MCU_init.h"
 #include "SYS_init.h"
@@ -17,6 +18,24 @@
 #define P250ms 250000
 #define P500ms 500000
 #define P1S 	1000000
+
+// function initiate
+
+void Display_7seg(uint16_t value);
+void Display_7seg_digit(uint16_t value);
+void GPIO_init();
+void buzz_init();
+void Buzz(int number);
+void gpio_display(int s);
+uint16_t show_number(int s);
+void ex3_1(void);
+void ex3_2(void);
+void playmusic(int tone[], int song[], int pitch[], int length);
+void playlilbee(int s);
+void playpolicehorn(int s);
+void alldown(void);
+void pauseall(void);
+bool checkControl(void);
 
 
 // display an integer on four 7-segment LEDs
@@ -137,20 +156,128 @@ void ex3_2(void)
 	}
 }
 
-void playambulance(void);
-void playpolicehorn(void);
-void playlilbee(void);
+bool checkControl(void)
+{
+	int s = ScanKey();
+	if (s == 9)
+	{
+		alldown();
+		return true;
+	}
+	if (s == 8)
+	{
+		pauseall();
+		while(1) 
+		{
+			CLK_SysTickDelay(10000);
+			if(s == 9)
+			{
+				alldown();
+				return true;
+			}
+			if (s == 8)
+			{
+				CLK_SysTickDelay(300000);
+				return false;
+			}
+		}
+	}
+	return false;
+}
+
+
+void playmusic(int tone[], int song[], int pitch[], int length)
+{
+		int i , j , count = 0;
+	
+		for(i = 0; i < length; i++)
+		{
+        if (checkControl()) return;
+			
+				count=pitch[i]/(2*tone[song[i]-1]);  //calcuelate the number of periods for the beat
+        
+				for(j=0; j<count; j++)
+				{
+						if ((j%20) == 0)
+						{
+							if (checkControl()) return;
+						}
+						PB11=0;
+            CLK_SysTickDelay(tone[song[i]-1]);
+            PB11=1;
+            CLK_SysTickDelay(tone[song[i]-1]);
+        }
+        CLK_SysTickDelay(1000); // short pause between notes
+    }
+}
+
+void playlilbee(int s)
+{
+		int tone[7]={956, 851, 758, 716, 637, 568, 506};
+		int song[13]={5, 3, 3, 4, 2, 2, 1, 2, 3, 4, 5, 5, 5};
+		int pitch[13]={P250ms, P250ms, P500ms, P250ms, P250ms, P500ms,
+               P250ms, P250ms, P250ms, P250ms, P250ms, P250ms, P500ms};
+		
+		int length = sizeof(song) / sizeof(song[0]);
+    // volatile uint32_t *lightpin[4] = {&PC12, &PC13, &PC14, &PC15};
+		
+		// song played 
+		playmusic(tone, song, pitch, length);
+}
+
+void playpolicehorn(int s)
+{
+	int tone[] = {625,500};
+	int song[] = {1,2,1,2,1,2,1,2};
+	int pitch[] ={P250ms, P250ms, P250ms, P250ms, P250ms, P250ms, P250ms, P250ms};
+	
+	int length = sizeof(song) / sizeof(song[0]);
+	// left to right gpio display 
+	// volatile uint32_t *lightpin[4] = {&PC12, &PC13, &PC14, &PC15};
+	// song play 
+	playmusic(tone, song, pitch, length);
+}
+
+
+void playambulance(int s)
+{
+	int tone[] = {833, 625};
+	int song[] = {1, 2, 1, 2, 1, 2, 1, 2};
+	int pitch[] = {P500ms, P500ms, P500ms, P500ms, P500ms, P500ms, P500ms, P500ms};
+	
+	// display with the sound 
+	//volatile uint32_t *lightpin[4] = {&PC12, &PC15};
+	
+	//length of song 
+	int length = sizeof(song) / sizeof(song[0]);
+	// song play 
+	playmusic(tone, song, pitch, length);
+	//gpio_display(lightpin);
+}
+
+void pauseall(void)
+{
+	PB11 = 1;
+}
+
+void alldown(void)
+{
+	PB11 = 1; //buzz all down 
+	PC12 = 1; PC13 = 1; PC14 = 1; PC15 = 1; // gpio return 0;
+}
 
 void ex3_3(void)
 {
 	while (1)
 	{
 		int s = ScanKey();
-		if (s!= 0 && s == 4 || s == 5 || s == 6)
+		if (s != 0 && s == 4 || s == 5 || s == 6)
 		{
-				if ( s == 4) playambulance();
-				else if (s == 5) playpolicehorn();
-				else if (s == 6) playlilbee();
+				if ( s == 4) playambulance(s);
+				else if (s == 5) playpolicehorn(s);
+				else if (s == 6) playlilbee(s);
+				else if (s == 8) pauseall();
+				else if (s == 9) alldown();
 				else continue;
 		}
 	}
