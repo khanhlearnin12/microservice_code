@@ -28,14 +28,20 @@ void buzz_init();
 void Buzz(int number);
 void gpio_display(int s);
 uint16_t show_number(int s);
+// excercies 
 void ex3_1(void);
 void ex3_2(void);
-void playmusic(int tone[], int song[], int pitch[], int length);
+void ex3_3(void);
+//function in ex3_3
+bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *ligthpin[],int lightlen);
 void playlilbee(int s);
 void playpolicehorn(int s);
 void alldown(void);
 void pauseall(void);
 bool checkControl(void);
+//gpio movement
+void gpio_movement(volatile uint32_t *pin ,int length);
+
 
 
 // display an integer on four 7-segment LEDs
@@ -167,9 +173,16 @@ bool checkControl(void)
 	if (s == 8)
 	{
 		pauseall();
+		//wait for the next 8 to resume 
+		while (ScanKey() == 8)
+		{
+			CLK_SysTickDelay(10000);
+		}
+		
 		while(1) 
 		{
 			CLK_SysTickDelay(10000);
+			s = ScanKey();
 			if(s == 9)
 			{
 				alldown();
@@ -177,8 +190,8 @@ bool checkControl(void)
 			}
 			if (s == 8)
 			{
-				CLK_SysTickDelay(300000);
-				return false;
+				while (ScanKey() == 8) CLK_SysTickDelay(10000);
+				break;
 			}
 		}
 	}
@@ -186,43 +199,60 @@ bool checkControl(void)
 }
 
 
-void playmusic(int tone[], int song[], int pitch[], int length)
+bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *lightpin[], int lightlen)
 {
 		int i , j , count = 0;
 	
 		for(i = 0; i < length; i++)
 		{
-        if (checkControl()) return;
-			
+        if (checkControl()) return true;
+				if (lightlen > 0) *lightpin[i  % lightlen] = 0;
+				
 				count=pitch[i]/(2*tone[song[i]-1]);  //calcuelate the number of periods for the beat
         
 				for(j=0; j<count; j++)
 				{
 						if ((j%20) == 0)
 						{
-							if (checkControl()) return;
+							if (checkControl())
+							{
+								if (lightlen > 0) *lightpin[i  % lightlen] = 1;
+								return true;
+							}
 						}
 						PB11=0;
             CLK_SysTickDelay(tone[song[i]-1]);
             PB11=1;
             CLK_SysTickDelay(tone[song[i]-1]);
         }
+				
+				if (lightlen > 0) *lightpin[i  % lightlen] = 1;
         CLK_SysTickDelay(1000); // short pause between notes
     }
+		return false;
 }
 
 void playlilbee(int s)
 {
+		// another song just change this one is good 
 		int tone[7]={956, 851, 758, 716, 637, 568, 506};
 		int song[13]={5, 3, 3, 4, 2, 2, 1, 2, 3, 4, 5, 5, 5};
 		int pitch[13]={P250ms, P250ms, P500ms, P250ms, P250ms, P500ms,
                P250ms, P250ms, P250ms, P250ms, P250ms, P250ms, P500ms};
 		
+		//length of the song 
 		int length = sizeof(song) / sizeof(song[0]);
-    // volatile uint32_t *lightpin[4] = {&PC12, &PC13, &PC14, &PC15};
 		
+		// ligth and the lightlen things 
+    volatile uint32_t *lightpin[4] = {&PC15, &PC14, &PC13, &PC12};
+		int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
 		// song played 
-		playmusic(tone, song, pitch, length);
+		int i = 0;
+		while (1)
+		{
+			if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin, lightlen))
+				return;
+		}
 }
 
 void playpolicehorn(int s)
@@ -232,12 +262,17 @@ void playpolicehorn(int s)
 	int pitch[] ={P250ms, P250ms, P250ms, P250ms, P250ms, P250ms, P250ms, P250ms};
 	
 	int length = sizeof(song) / sizeof(song[0]);
-	// left to right gpio display 
-	// volatile uint32_t *lightpin[4] = {&PC12, &PC13, &PC14, &PC15};
+	
+	volatile uint32_t *lightpin[4] = {&PC12, &PC13, &PC14, &PC15};
+	int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
+	
 	// song play 
-	playmusic(tone, song, pitch, length);
+	while (1)
+	{
+		if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin, lightlen))
+			return;
+	}
 }
-
 
 void playambulance(int s)
 {
@@ -245,19 +280,24 @@ void playambulance(int s)
 	int song[] = {1, 2, 1, 2, 1, 2, 1, 2};
 	int pitch[] = {P500ms, P500ms, P500ms, P500ms, P500ms, P500ms, P500ms, P500ms};
 	
-	// display with the sound 
-	//volatile uint32_t *lightpin[4] = {&PC12, &PC15};
+	// light gpio 
+	volatile uint32_t *lightpin[2] = {&PC12, &PC15};
+	int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
 	
 	//length of song 
 	int length = sizeof(song) / sizeof(song[0]);
 	// song play 
-	playmusic(tone, song, pitch, length);
-	//gpio_display(lightpin);
+	while (1)
+	{
+		if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin , lightlen))
+			return;
+	}
 }
 
 void pauseall(void)
-{
+{ 
 	PB11 = 1;
+	CLK_SysTickDelay(50000);
 }
 
 void alldown(void)
@@ -271,27 +311,32 @@ void ex3_3(void)
 	while (1)
 	{
 		int s = ScanKey();
-		if (s != 0 && s == 4 || s == 5 || s == 6)
-		{
-				if ( s == 4) playambulance(s);
-				else if (s == 5) playpolicehorn(s);
-				else if (s == 6) playlilbee(s);
-				else if (s == 8) pauseall();
-				else if (s == 9) alldown();
-				else continue;
-		}
+
+		if ( s == 4) playambulance(s);
+		else if (s == 5) playpolicehorn(s);
+		else if (s == 6) playlilbee(s);
+		else if (s == 8) pauseall();
+		else if (s == 9) alldown();
 	}
 }
 
 int main(void)
 {
+	// we can do as press 1 to play the frist/ 2 to second / 3 to play the thrid 
 		//intital function 
    SYS_Init();
    OpenSevenSegment(); // for 7-segment
 	 OpenKeyPad();       // for keypad
    buzz_init();
 	 GPIO_init();
- 	 //ex3_1();
-	 //ex3_2();
-		ex3_3();
+	
+	int times = 0;
+	while(1)
+	{
+		times = ScanKey();
+		if (times == 1) ex3_1();
+		else if (times == 2) ex3_2();
+		else if (times == 3 )ex3_3();
+		else continue;
+	} 
 }

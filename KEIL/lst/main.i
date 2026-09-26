@@ -2582,14 +2582,20 @@ void buzz_init();
 void Buzz(int number);
 void gpio_display(int s);
 uint16_t show_number(int s);
+
 void ex3_1(void);
 void ex3_2(void);
-void playmusic(int tone[], int song[], int pitch[], int length);
+void ex3_3(void);
+
+_Bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *ligthpin[],int lightlen);
 void playlilbee(int s);
 void playpolicehorn(int s);
 void alldown(void);
 void pauseall(void);
 _Bool checkControl(void);
+
+void gpio_movement(volatile uint32_t *pin ,int length);
+
 
 
 
@@ -2721,9 +2727,16 @@ _Bool checkControl(void)
  if (s == 8)
  {
   pauseall();
+
+  while (ScanKey() == 8)
+  {
+   CLK_SysTickDelay(10000);
+  }
+
   while(1)
   {
    CLK_SysTickDelay(10000);
+   s = ScanKey();
    if(s == 9)
    {
     alldown();
@@ -2731,8 +2744,8 @@ _Bool checkControl(void)
    }
    if (s == 8)
    {
-    CLK_SysTickDelay(300000);
-    return 0;
+    while (ScanKey() == 8) CLK_SysTickDelay(10000);
+    break;
    }
   }
  }
@@ -2740,13 +2753,14 @@ _Bool checkControl(void)
 }
 
 
-void playmusic(int tone[], int song[], int pitch[], int length)
+_Bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *lightpin[], int lightlen)
 {
   int i , j , count = 0;
 
   for(i = 0; i < length; i++)
   {
-        if (checkControl()) return;
+        if (checkControl()) return 1;
+    if (lightlen > 0) *lightpin[i % lightlen] = 0;
 
     count=pitch[i]/(2*tone[song[i]-1]);
 
@@ -2754,29 +2768,45 @@ void playmusic(int tone[], int song[], int pitch[], int length)
     {
       if ((j%20) == 0)
       {
-       if (checkControl()) return;
+       if (checkControl())
+       {
+        if (lightlen > 0) *lightpin[i % lightlen] = 1;
+        return 1;
+       }
       }
       (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=0;
             CLK_SysTickDelay(tone[song[i]-1]);
             (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=1;
             CLK_SysTickDelay(tone[song[i]-1]);
         }
+
+    if (lightlen > 0) *lightpin[i % lightlen] = 1;
         CLK_SysTickDelay(1000);
     }
+  return 0;
 }
 
 void playlilbee(int s)
 {
+
   int tone[7]={956, 851, 758, 716, 637, 568, 506};
   int song[13]={5, 3, 3, 4, 2, 2, 1, 2, 3, 4, 5, 5, 5};
   int pitch[13]={250000, 250000, 500000, 250000, 250000, 500000,
                250000, 250000, 250000, 250000, 250000, 250000, 500000};
 
+
   int length = sizeof(song) / sizeof(song[0]);
 
 
+    volatile uint32_t *lightpin[4] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2))))};
+  int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
 
-  playmusic(tone, song, pitch, length);
+  int i = 0;
+  while (1)
+  {
+   if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin, lightlen))
+    return;
+  }
 }
 
 void playpolicehorn(int s)
@@ -2787,11 +2817,16 @@ void playpolicehorn(int s)
 
  int length = sizeof(song) / sizeof(song[0]);
 
+ volatile uint32_t *lightpin[4] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2))))};
+ int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
 
 
- playmusic(tone, song, pitch, length);
+ while (1)
+ {
+  if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin, lightlen))
+   return;
+ }
 }
-
 
 void playambulance(int s)
 {
@@ -2800,18 +2835,23 @@ void playambulance(int s)
  int pitch[] = {500000, 500000, 500000, 500000, 500000, 500000, 500000, 500000};
 
 
-
+ volatile uint32_t *lightpin[2] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2))))};
+ int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
 
 
  int length = sizeof(song) / sizeof(song[0]);
 
- playmusic(tone, song, pitch, length);
-
+ while (1)
+ {
+  if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin , lightlen))
+   return;
+ }
 }
 
 void pauseall(void)
 {
  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2)))) = 1;
+ CLK_SysTickDelay(50000);
 }
 
 void alldown(void)
@@ -2825,20 +2865,18 @@ void ex3_3(void)
  while (1)
  {
   int s = ScanKey();
-  if (s != 0 && s == 4 || s == 5 || s == 6)
-  {
-    if ( s == 4) playambulance(s);
-    else if (s == 5) playpolicehorn(s);
-    else if (s == 6) playlilbee(s);
-    else if (s == 8) pauseall();
-    else if (s == 9) alldown();
-    else continue;
-  }
+
+  if ( s == 4) playambulance(s);
+  else if (s == 5) playpolicehorn(s);
+  else if (s == 6) playlilbee(s);
+  else if (s == 8) pauseall();
+  else if (s == 9) alldown();
  }
 }
 
 int main(void)
 {
+
 
    SYS_Init();
    OpenSevenSegment();
@@ -2846,6 +2884,13 @@ int main(void)
    buzz_init();
   GPIO_init();
 
-
-  ex3_3();
+ int times = 0;
+ while(1)
+ {
+  times = ScanKey();
+  if (times == 1) ex3_1();
+  else if (times == 2) ex3_2();
+  else if (times == 3 )ex3_3();
+  else continue;
+ }
 }
