@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\obj\GPIO_7seg_keypad.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\obj\GPIO_7seg_keypad.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Sat Sep 26 11:33:53 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Wed Oct  7 22:57:06 2026
 <BR><P>
-<H3>Maximum Stack Usage =        320 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        176 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; ex3_3 &rArr; playlilbee &rArr; playmusic_and_displaygpio &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
+main &rArr; SYS_Init &rArr; CLK_SetCoreClock &rArr; CLK_EnablePLL &rArr; CLK_GetPLLClockFreq &rArr; __aeabi_uidiv
 <P>
 <H3>
 Mutually Recursive functions
@@ -29,7 +29,7 @@ Function Pointers
  <LI><a href="#[1b]">CAN1_IRQHandler</a> from startup_nuc100series.o(.text) referenced from startup_nuc100series.o(RESET)
  <LI><a href="#[24]">Default_Handler</a> from startup_nuc100series.o(.text) referenced from startup_nuc100series.o(RESET)
  <LI><a href="#[8]">EINT0_IRQHandler</a> from startup_nuc100series.o(.text) referenced from startup_nuc100series.o(RESET)
- <LI><a href="#[9]">EINT1_IRQHandler</a> from startup_nuc100series.o(.text) referenced from startup_nuc100series.o(RESET)
+ <LI><a href="#[9]">EINT1_IRQHandler</a> from main.o(.text.EINT1_IRQHandler) referenced from startup_nuc100series.o(RESET)
  <LI><a href="#[a]">GPAB_IRQHandler</a> from startup_nuc100series.o(.text) referenced from startup_nuc100series.o(RESET)
  <LI><a href="#[b]">GPCDEF_IRQHandler</a> from startup_nuc100series.o(.text) referenced from startup_nuc100series.o(RESET)
  <LI><a href="#[2]">HardFault_Handler</a> from startup_nuc100series.o(.text) referenced from startup_nuc100series.o(RESET)
@@ -71,7 +71,7 @@ Global Symbols
 <P><STRONG><a name="[28]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(.text)
 </UL>
-<P><STRONG><a name="[53]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[56]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[29]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -81,15 +81,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[54]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[57]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[55]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[58]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[56]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[59]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[57]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[5a]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[58]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[5b]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, startup_nuc100series.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(RESET)
@@ -145,9 +145,6 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(RESET)
 </UL>
 <P><STRONG><a name="[8]"></a>EINT0_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_nuc100series.o(.text))
-<BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(RESET)
-</UL>
-<P><STRONG><a name="[9]"></a>EINT1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_nuc100series.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(RESET)
 </UL>
 <P><STRONG><a name="[a]"></a>GPAB_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_nuc100series.o(.text))
@@ -222,10 +219,16 @@ Global Symbols
 <P><STRONG><a name="[7]"></a>WDT_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_nuc100series.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(RESET)
 </UL>
+<P><STRONG><a name="[4e]"></a>rand</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rand.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+</UL>
+
+<P><STRONG><a name="[5c]"></a>srand</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, rand.o(.text), UNUSED)
+
 <P><STRONG><a name="[32]"></a>__aeabi_uidiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, uidiv_div0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_uidiv
 </UL>
-<BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg
+<BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevseg_display_modify
 <LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_EnablePLL
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_GetPLLClockFreq
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
@@ -236,12 +239,13 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_uidivmod
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
+<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevseg_display_modify
 </UL>
 
-<P><STRONG><a name="[52]"></a>__aeabi_idiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, idiv_div0.o(.text))
+<P><STRONG><a name="[49]"></a>__aeabi_idiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, idiv_div0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_idiv
 </UL>
-<BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playmusic_and_displaygpio
+<BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_1
 </UL>
 
 <P><STRONG><a name="[2b]"></a>__aeabi_idivmod</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, idiv_div0.o(.text))
@@ -249,7 +253,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
 </UL>
-<BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playmusic_and_displaygpio
+<BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;is_prime
+<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_1
 </UL>
 
 <P><STRONG><a name="[2a]"></a>__scatterload</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, init.o(.text))
@@ -258,14 +264,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[59]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[5d]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[2e]"></a>Buzz</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, main.o(.text.Buzz))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Buzz &rArr; CLK_SysTickDelay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_2
+<BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led_light_determination
 </UL>
 
 <P><STRONG><a name="[30]"></a>CLK_EnablePLL</STRONG> (Thumb, 472 bytes, Stack size 72 bytes, clk.o(.text.CLK_EnablePLL))
@@ -308,45 +314,53 @@ Global Symbols
 <LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_EnablePLL
 </UL>
 
-<P><STRONG><a name="[39]"></a>CloseSevenSegment</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, seven_segment.o(.text.CloseSevenSegment))
-<BR><BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg_digit
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg
+<P><STRONG><a name="[4c]"></a>CloseSevenSegment</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, seven_segment.o(.text.CloseSevenSegment))
+<BR><BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevseg_display_modify
 </UL>
 
-<P><STRONG><a name="[38]"></a>Display_7seg</STRONG> (Thumb, 196 bytes, Stack size 40 bytes, main.o(.text.Display_7seg))
-<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = Display_7seg &rArr; ShowSevenSegment
+<P><STRONG><a name="[9]"></a>EINT1_IRQHandler</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, main.o(.text.EINT1_IRQHandler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(RESET)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidiv
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ShowSevenSegment
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CloseSevenSegment
-<LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
+<P><STRONG><a name="[3b]"></a>GPIO_EnableInt</STRONG> (Thumb, 48 bytes, Stack size 12 bytes, gpio.o(.text.GPIO_EnableInt))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = GPIO_EnableInt
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_2
+<BR>[Called By]<UL><LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_EXTINT
 </UL>
 
-<P><STRONG><a name="[3b]"></a>Display_7seg_digit</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, main.o(.text.Display_7seg_digit))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = Display_7seg_digit &rArr; ShowSevenSegment
-</UL>
-<BR>[Calls]<UL><LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ShowSevenSegment
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CloseSevenSegment
-<LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
-</UL>
-<BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_1
-</UL>
-
-<P><STRONG><a name="[3d]"></a>GPIO_SetMode</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, gpio.o(.text.GPIO_SetMode))
+<P><STRONG><a name="[39]"></a>GPIO_SetMode</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, gpio.o(.text.GPIO_SetMode))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = GPIO_SetMode
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OpenKeyPad
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OpenSevenSegment
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_EXTINT
+<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_GPIO_RGB
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buzz_init
-<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_init
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_init
 </UL>
 
-<P><STRONG><a name="[3c]"></a>GPIO_init</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, main.o(.text.GPIO_init))
+<P><STRONG><a name="[38]"></a>GPIO_init</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, main.o(.text.GPIO_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = GPIO_init &rArr; GPIO_SetMode
 </UL>
-<BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
+<BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
+</UL>
+<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[3a]"></a>Init_EXTINT</STRONG> (Thumb, 60 bytes, Stack size 24 bytes, main.o(.text.Init_EXTINT))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Init_EXTINT &rArr; GPIO_SetMode
+</UL>
+<BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_EnableIRQ
+<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_EnableInt
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
+</UL>
+<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[3d]"></a>Init_GPIO_RGB</STRONG> (Thumb, 56 bytes, Stack size 16 bytes, main.o(.text.Init_GPIO_RGB))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Init_GPIO_RGB &rArr; GPIO_SetMode
+</UL>
+<BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -354,7 +368,7 @@ Global Symbols
 <P><STRONG><a name="[3e]"></a>OpenKeyPad</STRONG> (Thumb, 72 bytes, Stack size 16 bytes, scankey.o(.text.OpenKeyPad))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = OpenKeyPad &rArr; GPIO_SetMode
 </UL>
-<BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
+<BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -362,7 +376,7 @@ Global Symbols
 <P><STRONG><a name="[3f]"></a>OpenSevenSegment</STRONG> (Thumb, 200 bytes, Stack size 48 bytes, seven_segment.o(.text.OpenSevenSegment))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = OpenSevenSegment &rArr; GPIO_SetMode
 </UL>
-<BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
+<BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -383,17 +397,15 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = ScanKey
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_3
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkControl
-<LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_2
-<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_1
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chasing_light
+<LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_1
 </UL>
 
-<P><STRONG><a name="[3a]"></a>ShowSevenSegment</STRONG> (Thumb, 384 bytes, Stack size 28 bytes, seven_segment.o(.text.ShowSevenSegment))
+<P><STRONG><a name="[55]"></a>ShowSevenSegment</STRONG> (Thumb, 384 bytes, Stack size 28 bytes, seven_segment.o(.text.ShowSevenSegment))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = ShowSevenSegment
 </UL>
-<BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg_digit
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg
+<BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevseg_display_modify
 </UL>
 
 <P><STRONG><a name="[37]"></a>SystemCoreClockUpdate</STRONG> (Thumb, 96 bytes, Stack size 24 bytes, system_nuc100series.o(.text.SystemCoreClockUpdate))
@@ -408,142 +420,142 @@ Global Symbols
 <P><STRONG><a name="[27]"></a>SystemInit</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, system_nuc100series.o(.text.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_nuc100series.o(.text)
 </UL>
-<P><STRONG><a name="[47]"></a>alldown</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, main.o(.text.alldown))
-<BR><BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_3
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkControl
+<P><STRONG><a name="[4d]"></a>all_off</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, main.o(.text.all_off))
+<BR><BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
 </UL>
 
 <P><STRONG><a name="[44]"></a>buzz_init</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, main.o(.text.buzz_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = buzz_init &rArr; GPIO_SetMode
 </UL>
-<BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
+<BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetMode
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[45]"></a>checkControl</STRONG> (Thumb, 148 bytes, Stack size 16 bytes, main.o(.text.checkControl))
-<BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = checkControl &rArr; pauseall &rArr; CLK_SysTickDelay
+<P><STRONG><a name="[45]"></a>chasing_light</STRONG> (Thumb, 196 bytes, Stack size 40 bytes, main.o(.text.chasing_light))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = chasing_light &rArr; rgb_key
 </UL>
-<BR>[Calls]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pauseall
-<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alldown
+<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rgb_key
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanKey
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playmusic_and_displaygpio
+<BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_3
 </UL>
 
-<P><STRONG><a name="[49]"></a>ex3_1</STRONG> (Thumb, 92 bytes, Stack size 56 bytes, main.o(.text.ex3_1))
-<BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = ex3_1 &rArr; Display_7seg_digit &rArr; ShowSevenSegment
-</UL>
-<BR>[Calls]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanKey
-<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_display
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg_digit
-</UL>
-<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<P><STRONG><a name="[52]"></a>display_light_blue</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(.text.display_light_blue))
+<BR><BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rgb_key
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led_light_determination
 </UL>
 
-<P><STRONG><a name="[4b]"></a>ex3_2</STRONG> (Thumb, 90 bytes, Stack size 24 bytes, main.o(.text.ex3_2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = ex3_2 &rArr; Display_7seg &rArr; ShowSevenSegment
-</UL>
-<BR>[Calls]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanKey
-<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;show_number
-<LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Buzz
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg
-</UL>
-<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<P><STRONG><a name="[53]"></a>display_light_green</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(.text.display_light_green))
+<BR><BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rgb_key
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led_light_determination
 </UL>
 
-<P><STRONG><a name="[4d]"></a>ex3_3</STRONG> (Thumb, 98 bytes, Stack size 16 bytes, main.o(.text.ex3_3))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = ex3_3 &rArr; playlilbee &rArr; playmusic_and_displaygpio &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
+<P><STRONG><a name="[54]"></a>display_light_red</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(.text.display_light_red))
+<BR><BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rgb_key
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led_light_determination
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playambulance
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playpolicehorn
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playlilbee
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pauseall
-<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alldown
+
+<P><STRONG><a name="[48]"></a>ex4_1</STRONG> (Thumb, 280 bytes, Stack size 48 bytes, main.o(.text.ex4_1))
+<BR><BR>[Stack]<UL><LI>Max Depth = 116<LI>Call Chain = ex4_1 &rArr; sevseg_display_modify &rArr; ShowSevenSegment
+</UL>
+<BR>[Calls]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idiv
+<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevseg_display_modify
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanKey
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4a]"></a>gpio_display</STRONG> (Thumb, 64 bytes, Stack size 4 bytes, main.o(.text.gpio_display))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = gpio_display
+<P><STRONG><a name="[4b]"></a>ex4_2</STRONG> (Thumb, 144 bytes, Stack size 24 bytes, main.o(.text.ex4_2))
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = ex4_2 &rArr; led_light_determination &rArr; is_prime &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_1
+<BR>[Calls]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rand
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led_light_determination
+<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;all_off
+<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevseg_display_modify
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanKey
+<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CloseSevenSegment
+<LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
+</UL>
+<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[26]"></a>main</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = main &rArr; ex3_3 &rArr; playlilbee &rArr; playmusic_and_displaygpio &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
+<P><STRONG><a name="[50]"></a>ex4_3</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(.text.ex4_3))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ex4_3 &rArr; chasing_light &rArr; rgb_key
+</UL>
+<BR>[Calls]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chasing_light
+</UL>
+<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[51]"></a>is_prime</STRONG> (Thumb, 86 bytes, Stack size 24 bytes, main.o(.text.is_prime))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = is_prime &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
+</UL>
+<BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led_light_determination
+</UL>
+
+<P><STRONG><a name="[4f]"></a>led_light_determination</STRONG> (Thumb, 176 bytes, Stack size 40 bytes, main.o(.text.led_light_determination))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = led_light_determination &rArr; is_prime &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;is_prime
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display_light_red
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display_light_green
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display_light_blue
+<LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Buzz
+</UL>
+<BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+</UL>
+
+<P><STRONG><a name="[26]"></a>main</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, main.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = main &rArr; SYS_Init &rArr; CLK_SetCoreClock &rArr; CLK_EnablePLL &rArr; CLK_GetPLLClockFreq &rArr; __aeabi_uidiv
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OpenKeyPad
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OpenSevenSegment
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SYS_Init
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_3
-<LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_2
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_3
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_EXTINT
+<LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_GPIO_RGB
+<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_1
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanKey
-<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_1
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buzz_init
-<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_init
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_init
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[48]"></a>pauseall</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, main.o(.text.pauseall))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = pauseall &rArr; CLK_SysTickDelay
+<P><STRONG><a name="[47]"></a>rgb_key</STRONG> (Thumb, 84 bytes, Stack size 16 bytes, main.o(.text.rgb_key))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = rgb_key
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
+<BR>[Calls]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display_light_red
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display_light_green
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display_light_blue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_3
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkControl
-</UL>
-
-<P><STRONG><a name="[4e]"></a>playambulance</STRONG> (Thumb, 88 bytes, Stack size 120 bytes, main.o(.text.playambulance))
-<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = playambulance &rArr; playmusic_and_displaygpio &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
-</UL>
-<BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playmusic_and_displaygpio
-</UL>
-<BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_3
+<BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chasing_light
 </UL>
 
-<P><STRONG><a name="[50]"></a>playlilbee</STRONG> (Thumb, 120 bytes, Stack size 192 bytes, main.o(.text.playlilbee))
-<BR><BR>[Stack]<UL><LI>Max Depth = 280<LI>Call Chain = playlilbee &rArr; playmusic_and_displaygpio &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
+<P><STRONG><a name="[4a]"></a>sevseg_display_modify</STRONG> (Thumb, 160 bytes, Stack size 40 bytes, main.o(.text.sevseg_display_modify))
+<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = sevseg_display_modify &rArr; ShowSevenSegment
 </UL>
-<BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playmusic_and_displaygpio
-</UL>
-<BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_3
-</UL>
-
-<P><STRONG><a name="[51]"></a>playmusic_and_displaygpio</STRONG> (Thumb, 340 bytes, Stack size 56 bytes, main.o(.text.playmusic_and_displaygpio))
-<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = playmusic_and_displaygpio &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
-</UL>
-<BR>[Calls]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idiv
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkControl
+<BR>[Calls]<UL><LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
+<LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidiv
+<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ShowSevenSegment
+<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CloseSevenSegment
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLK_SysTickDelay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playambulance
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playpolicehorn
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playlilbee
+<BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_1
 </UL>
 
-<P><STRONG><a name="[4f]"></a>playpolicehorn</STRONG> (Thumb, 100 bytes, Stack size 128 bytes, main.o(.text.playpolicehorn))
-<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = playpolicehorn &rArr; playmusic_and_displaygpio &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
-</UL>
-<BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playmusic_and_displaygpio
-</UL>
-<BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_3
-</UL>
+<P><STRONG><a name="[5e]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[4c]"></a>show_number</STRONG> (Thumb, 84 bytes, Stack size 32 bytes, main.o(.text.show_number))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = show_number
-</UL>
-<BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex3_2
-</UL>
+<P><STRONG><a name="[5f]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[5a]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
-
-<P><STRONG><a name="[5b]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
-
-<P><STRONG><a name="[5c]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[60]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 <P>
 <H3>
 Local Symbols
@@ -574,12 +586,16 @@ Local Symbols
 <P><STRONG><a name="[2f]"></a>CLK_SysTickDelay</STRONG> (Thumb, 56 bytes, Stack size 4 bytes, main.o(.text.CLK_SysTickDelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = CLK_SysTickDelay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playmusic_and_displaygpio
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pauseall
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkControl
+<BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chasing_light
+<LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ex4_2
+<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevseg_display_modify
 <LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Buzz
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg_digit
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_7seg
+</UL>
+
+<P><STRONG><a name="[3c]"></a>NVIC_EnableIRQ</STRONG> (Thumb, 28 bytes, Stack size 4 bytes, main.o(.text.NVIC_EnableIRQ))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = NVIC_EnableIRQ
+</UL>
+<BR>[Called By]<UL><LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_EXTINT
 </UL>
 
 <P><STRONG><a name="[41]"></a>SYS_UnlockReg</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, sys_init.o(.text.SYS_UnlockReg))
