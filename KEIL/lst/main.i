@@ -2783,555 +2783,559 @@ void CloseKeyPad(void);
 uint8_t ScanKey(void);
 # 16 "../main.c" 2
 # 25 "../main.c"
- void Display_7seg(uint16_t value);
- void Display_7seg_digit(uint16_t value);
- void GPIO_init(void);
- void buzz_init(void);
- void Buzz(int number);
- void gpio_display(int s);
- uint16_t show_number(int s);
+void Display_7seg(uint16_t value);
+void Display_7seg_digit(uint16_t value);
+void GPIO_init(void);
+void buzz_init(void);
+void Buzz(int number);
+void gpio_display(int s);
+uint16_t show_number(int s);
 
 
- void ex3_1(void);
- void ex3_2(void);
- void ex3_3(void);
+void ex3_1(void);
+void ex3_2(void);
+void ex3_3(void);
 
 
- void ex4_1(void);
- void ex4_2(void);
- void ex4_3(void);
+void ex4_1(void);
+void ex4_2(void);
+void ex4_3(void);
 
 
- void sevseg_display_modify(uint16_t value);
- void backthehellup(void);
- void cleargpio(void);
- void plus_num(void);
+void sevseg_display_modify(uint16_t value);
+void backthehellup(void);
+void cleargpio(void);
+void plus_num(void);
 
 
- void Init_GPIO_RGB(void);
- void display_light_blue(void);
- void display_light_green(void);
- void display_light_red(void);
- _Bool is_prime(int number);
- void all_off(void);
- void led_light_determination(int num);
+void Init_GPIO_RGB(void);
+void display_light_blue(void);
+void display_light_green(void);
+void display_light_red(void);
+_Bool is_prime(int number);
+void all_off(void);
+void led_light_determination(int num);
 
 
- void chasing_light(void);
- void Init_EXTINT(void);
- void rev_chasing_light(void);
- void rgb_key(int key);
+void chasing_light(void);
+void Init_EXTINT(void);
+void rev_chasing_light(void);
+void rgb_key(int key);
 
 
- _Bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *ligthpin[],int lightlen);
- void playlilbee(int s);
- void playpolicehorn(int s);
- void alldown(void);
- void pauseall(void);
- _Bool checkControl(void);
-
- void gpio_movement(volatile uint32_t *pin ,int length);
+void ex5_1(void);
+void ex5_2(void);
 
 
+_Bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *ligthpin[],int lightlen);
+void playlilbee(int s);
+void playpolicehorn(int s);
+void alldown(void);
+void pauseall(void);
+_Bool checkControl(void);
+
+void gpio_movement(volatile uint32_t *pin ,int length);
 
 
- void Display_7seg(uint16_t value)
- {
-  uint8_t digit;
-  digit = value / 1000;
-  CloseSevenSegment();
-  ShowSevenSegment(3,digit);
-  CLK_SysTickDelay(5000);
 
-  value = value - digit * 1000;
-  digit = value / 100;
-  CloseSevenSegment();
-  ShowSevenSegment(2,digit);
-  CLK_SysTickDelay(5000);
 
-  value = value - digit * 100;
-  digit = value / 10;
-  CloseSevenSegment();
-  ShowSevenSegment(1,digit);
-  CLK_SysTickDelay(5000);
+void Display_7seg(uint16_t value)
+{
+ uint8_t digit;
+ digit = value / 1000;
+ CloseSevenSegment();
+ ShowSevenSegment(3,digit);
+ CLK_SysTickDelay(5000);
 
-  value = value - digit * 10;
-  digit = value;
-  CloseSevenSegment();
-  ShowSevenSegment(0,digit);
-  CLK_SysTickDelay(5000);
+ value = value - digit * 1000;
+ digit = value / 100;
+ CloseSevenSegment();
+ ShowSevenSegment(2,digit);
+ CLK_SysTickDelay(5000);
+
+ value = value - digit * 100;
+ digit = value / 10;
+ CloseSevenSegment();
+ ShowSevenSegment(1,digit);
+ CLK_SysTickDelay(5000);
+
+ value = value - digit * 10;
+ digit = value;
+ CloseSevenSegment();
+ ShowSevenSegment(0,digit);
+ CLK_SysTickDelay(5000);
+}
+
+void Display_7seg_digit(uint16_t value)
+{
+
+ CloseSevenSegment();
+ ShowSevenSegment(3,value);
+ CLK_SysTickDelay(5000);
+}
+
+void GPIO_init(void)
+{
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00001000, 0x1UL);
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00002000, 0x1UL);
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00004000, 0x1UL);
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00008000, 0x1UL);
+}
+
+void buzz_init(void)
+{
+
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)), 0x00000800, 0x1UL);
+}
+
+void Buzz(int number)
+{
+ int i;
+ for (i=0; i<number; i++) {
+   (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=0;
+  CLK_SysTickDelay(100000);
+  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=1;
+  CLK_SysTickDelay(100000);
  }
+}
 
- void Display_7seg_digit(uint16_t value)
- {
+void gpio_display(int s)
+{
 
-  CloseSevenSegment();
-  ShowSevenSegment(3,value);
-  CLK_SysTickDelay(5000);
- }
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))) = (s & 0x01) ? 0 : 1;
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))) = (s & 0x02) ? 0 : 1;
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))) = (s & 0x04) ? 0 : 1;
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))) = (s & 0x08) ? 0 : 1;
+}
 
- void GPIO_init(void)
- {
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00001000, 0x1UL);
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00002000, 0x1UL);
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00004000, 0x1UL);
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00008000, 0x1UL);
- }
+uint16_t show_number(int s)
+{
+ uint8_t bit0 = (s >> 0) & 1;
+ uint8_t bit1 = (s >> 1) & 1;
+ uint8_t bit2 = (s >> 2) & 1;
+ uint8_t bit3 = (s >> 3) & 1;
+ uint16_t sum = (bit3 * 1000)+ (bit2 * 100)+ (bit1 * 10)+ (bit0*1);
+ return sum;
+}
 
- void buzz_init(void)
- {
-
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)), 0x00000800, 0x1UL);
- }
-
- void Buzz(int number)
- {
-  int i;
-  for (i=0; i<number; i++) {
-    (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=0;
-   CLK_SysTickDelay(100000);
-   (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=1;
-   CLK_SysTickDelay(100000);
-  }
- }
-
- void gpio_display(int s)
- {
-
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))) = (s & 0x01) ? 0 : 1;
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))) = (s & 0x02) ? 0 : 1;
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))) = (s & 0x04) ? 0 : 1;
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))) = (s & 0x08) ? 0 : 1;
- }
-
- uint16_t show_number(int s)
- {
-  uint8_t bit0 = (s >> 0) & 1;
-  uint8_t bit1 = (s >> 1) & 1;
-  uint8_t bit2 = (s >> 2) & 1;
-  uint8_t bit3 = (s >> 3) & 1;
-  uint16_t sum = (bit3 * 1000)+ (bit2 * 100)+ (bit1 * 10)+ (bit0*1);
-  return sum;
- }
-
- void ex3_1(void)
- {
-  while(1)
-  {
-   int s = ScanKey();
-   int studentID[7] = {1,2,6,6,3,3,4};
-   if (s != 0)
-   {
-    if(s == 8 || s == 9) continue;
-    else
-    {
-     Display_7seg_digit(studentID[s-1]);
-     gpio_display(studentID[s-1]);
-    }
-   }
-  }
- }
-
- void ex3_2(void)
- {
-  int last_s;
-  uint16_t result = 0;
-  while(1)
-  {
-   int s = ScanKey();
-
-   if(s != 0 && s != 7 && s != 8 && s != 9)
-   {
-    if ( s != 0)
-    {
-     Buzz(s);
-     result = show_number(s);
-    }
-   }
-   Display_7seg(result);
-  }
- }
-
- _Bool checkControl(void)
+void ex3_1(void)
+{
+ while(1)
  {
   int s = ScanKey();
-  if (s == 9)
+  int studentID[7] = {1,2,6,6,3,3,4};
+  if (s != 0)
   {
-   alldown();
-   return 1;
+   if(s == 8 || s == 9) continue;
+   else
+   {
+    Display_7seg_digit(studentID[s-1]);
+    gpio_display(studentID[s-1]);
+   }
   }
-  if (s == 8)
+ }
+}
+
+void ex3_2(void)
+{
+ int last_s;
+ uint16_t result = 0;
+ while(1)
+ {
+  int s = ScanKey();
+
+  if(s != 0 && s != 7 && s != 8 && s != 9)
   {
-   pauseall();
-
-   while (ScanKey() == 8)
+   if ( s != 0)
    {
-    CLK_SysTickDelay(10000);
+    Buzz(s);
+    result = show_number(s);
    }
+  }
+  Display_7seg(result);
+ }
+}
 
-   while(1)
+_Bool checkControl(void)
+{
+ int s = ScanKey();
+ if (s == 9)
+ {
+  alldown();
+  return 1;
+ }
+ if (s == 8)
+ {
+  pauseall();
+
+  while (ScanKey() == 8)
+  {
+   CLK_SysTickDelay(10000);
+  }
+
+  while(1)
+  {
+   CLK_SysTickDelay(10000);
+   s = ScanKey();
+   if(s == 9)
    {
-    CLK_SysTickDelay(10000);
-    s = ScanKey();
-    if(s == 9)
-    {
-     alldown();
-     return 1;
-    }
-    if (s == 8)
-    {
-     while (ScanKey() == 8) CLK_SysTickDelay(10000);
-     break;
-    }
+    alldown();
+    return 1;
    }
+   if (s == 8)
+   {
+    while (ScanKey() == 8) CLK_SysTickDelay(10000);
+    break;
+   }
+  }
+ }
+ return 0;
+}
+
+
+_Bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *lightpin[], int lightlen)
+{
+  int i , j , count = 0;
+
+  for(i = 0; i < length; i++)
+  {
+    if (checkControl()) return 1;
+    if (lightlen > 0) *lightpin[i % lightlen] = 0;
+
+    count=pitch[i]/(2*tone[song[i]-1]);
+
+    for(j=0; j<count; j++)
+    {
+      if ((j%20) == 0)
+      {
+       if (checkControl())
+       {
+        if (lightlen > 0) *lightpin[i % lightlen] = 1;
+        return 1;
+       }
+      }
+      (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=0;
+      CLK_SysTickDelay(tone[song[i]-1]);
+      (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=1;
+      CLK_SysTickDelay(tone[song[i]-1]);
+    }
+
+    if (lightlen > 0) *lightpin[i % lightlen] = 1;
+    CLK_SysTickDelay(1000);
   }
   return 0;
- }
+}
 
+void playlilbee(int s)
+{
+  int i = 0;
 
- _Bool playmusic_and_displaygpio(int tone[], int song[], int pitch[], int length, volatile uint32_t *lightpin[], int lightlen)
- {
-   int i , j , count = 0;
+  int tone[7]={956, 851, 758, 716, 637, 568, 506};
+  int song[13]={5, 3, 3, 4, 2, 2, 1, 2, 3, 4, 5, 5, 5};
+  int pitch[13]={250000, 250000, 500000, 250000, 250000, 500000,
+        250000, 250000, 250000, 250000, 250000, 250000, 500000};
 
-   for(i = 0; i < length; i++)
-   {
-     if (checkControl()) return 1;
-     if (lightlen > 0) *lightpin[i % lightlen] = 0;
-
-     count=pitch[i]/(2*tone[song[i]-1]);
-
-     for(j=0; j<count; j++)
-     {
-       if ((j%20) == 0)
-       {
-        if (checkControl())
-        {
-         if (lightlen > 0) *lightpin[i % lightlen] = 1;
-         return 1;
-        }
-       }
-       (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=0;
-       CLK_SysTickDelay(tone[song[i]-1]);
-       (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2))))=1;
-       CLK_SysTickDelay(tone[song[i]-1]);
-     }
-
-     if (lightlen > 0) *lightpin[i % lightlen] = 1;
-     CLK_SysTickDelay(1000);
-   }
-   return 0;
- }
-
- void playlilbee(int s)
- {
-   int i = 0;
-
-   int tone[7]={956, 851, 758, 716, 637, 568, 506};
-   int song[13]={5, 3, 3, 4, 2, 2, 1, 2, 3, 4, 5, 5, 5};
-   int pitch[13]={250000, 250000, 500000, 250000, 250000, 500000,
-         250000, 250000, 250000, 250000, 250000, 250000, 500000};
-
-
-   int length = sizeof(song) / sizeof(song[0]);
-
-
-   volatile uint32_t *lightpin[4] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2))))};
-   int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
-
-   while (1)
-   {
-    if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin, lightlen))
-     return;
-   }
- }
-
- void playpolicehorn(int s)
- {
-  int tone[] = {625,500};
-  int song[] = {1,2,1,2,1,2,1,2};
-  int pitch[] ={250000, 250000, 250000, 250000, 250000, 250000, 250000, 250000};
 
   int length = sizeof(song) / sizeof(song[0]);
 
-  volatile uint32_t *lightpin[4] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2))))};
-  int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
 
+  volatile uint32_t *lightpin[4] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2))))};
+  int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
 
   while (1)
   {
    if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin, lightlen))
     return;
   }
+}
+
+void playpolicehorn(int s)
+{
+ int tone[] = {625,500};
+ int song[] = {1,2,1,2,1,2,1,2};
+ int pitch[] ={250000, 250000, 250000, 250000, 250000, 250000, 250000, 250000};
+
+ int length = sizeof(song) / sizeof(song[0]);
+
+ volatile uint32_t *lightpin[4] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2))))};
+ int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
+
+
+ while (1)
+ {
+  if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin, lightlen))
+   return;
+ }
+}
+
+void playambulance(int s)
+{
+ int tone[] = {833, 625};
+ int song[] = {1, 2, 1, 2, 1, 2, 1, 2};
+ int pitch[] = {500000, 500000, 500000, 500000, 500000, 500000, 500000, 500000};
+
+
+ volatile uint32_t *lightpin[2] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2))))};
+ int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
+
+
+ int length = sizeof(song) / sizeof(song[0]);
+
+ while (1)
+ {
+  if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin , lightlen))
+   return;
+ }
+}
+
+void pauseall(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2)))) = 1;
+ CLK_SysTickDelay(50000);
+}
+
+void alldown(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2)))) = 1;
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))) = 1;
+}
+
+void ex3_3(void)
+{
+ while (1)
+ {
+  int s = ScanKey();
+
+  if ( s == 4) playambulance(s);
+  else if (s == 5) playpolicehorn(s);
+  else if (s == 6) playlilbee(s);
+  else if (s == 8) pauseall();
+  else if (s == 9) alldown();
+ }
+}
+
+
+
+
+
+void sevseg_display_modify(uint16_t value)
+{
+  uint8_t i, digit;
+ if (value == 0)
+ {
+  CloseSevenSegment();
+  CLK_SysTickDelay(5000);
+  return;
  }
 
- void playambulance(int s)
- {
-  int tone[] = {833, 625};
-  int song[] = {1, 2, 1, 2, 1, 2, 1, 2};
-  int pitch[] = {500000, 500000, 500000, 500000, 500000, 500000, 500000, 500000};
-
-
-  volatile uint32_t *lightpin[2] = {&(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))), &(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2))))};
-  int lightlen = sizeof(lightpin) / sizeof(lightpin[0]);
-
-
-  int length = sizeof(song) / sizeof(song[0]);
-
-  while (1)
-  {
-   if(playmusic_and_displaygpio(tone, song, pitch, length, lightpin , lightlen))
-    return;
-  }
- }
-
- void pauseall(void)
- {
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2)))) = 1;
-  CLK_SysTickDelay(50000);
- }
-
- void alldown(void)
- {
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(1))) + ((11)<<2)))) = 1;
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((12)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((13)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((14)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(2))) + ((15)<<2)))) = 1;
- }
-
- void ex3_3(void)
- {
-  while (1)
-  {
-   int s = ScanKey();
-
-   if ( s == 4) playambulance(s);
-   else if (s == 5) playpolicehorn(s);
-   else if (s == 6) playlilbee(s);
-   else if (s == 8) pauseall();
-   else if (s == 9) alldown();
-  }
- }
-
-
-
-
-
- void sevseg_display_modify(uint16_t value)
- {
-   uint8_t i, digit;
-  if (value == 0)
+  for (i = 0; i < 4 && value > 0; i++)
   {
    CloseSevenSegment();
+   digit = value % 10;
+   ShowSevenSegment(i,digit);
+   value /= 10;
    CLK_SysTickDelay(5000);
-   return;
   }
-
-   for (i = 0; i < 4 && value > 0; i++)
-   {
-    CloseSevenSegment();
-    digit = value % 10;
-    ShowSevenSegment(i,digit);
-    value /= 10;
-    CLK_SysTickDelay(5000);
-   }
- }
+}
 
 
 
 
 
- void ex4_1(void)
+void ex4_1(void)
+{
+# 395 "../main.c"
+ int sum = 0;
+ int num1 = 0;
+ int numbers = 0;
+ int state = 0;
+ int input = 0;
+ int display_value = 0;
+ int step = 0;
+
+ while(1)
  {
-# 391 "../main.c"
-  int sum = 0;
-  int num1 = 0;
-  int numbers = 0;
-  int state = 0;
-  int input = 0;
-  int display_value = 0;
-  int step = 0;
-
-  while(1)
+  input = ScanKey();
+  if (input != 0)
+   state = input;
+  else
   {
-   input = ScanKey();
-   if (input != 0)
-    state = input;
-   else
+   switch (state)
    {
-    switch (state)
-    {
-     case 1: case 2: case 3:
-     case 4: case 5: case 6:
-      if (step < 2)
-      {
-       numbers = numbers * 10 + state;
-       numbers %= 1000;
-       display_value = numbers;
-      }
-      break;
-     case 7:
-      if (step < 2)
-      {
-       numbers /= 10;
-       display_value = (numbers == 0) ? 0 : numbers;
-      }
+    case 1: case 2: case 3:
+    case 4: case 5: case 6:
+     if (step < 2)
+     {
+      numbers = numbers * 10 + state;
+      numbers %= 1000;
+      display_value = numbers;
+     }
+     break;
+    case 7:
+     if (step < 2)
+     {
+      numbers /= 10;
+      display_value = (numbers == 0) ? 0 : numbers;
+     }
+     break;
+
+    case 8:
+      numbers = 0;
+      step = 0;
+      num1 = 0;
+      display_value = 0;
       break;
 
-     case 8:
-       numbers = 0;
-       step = 0;
-       num1 = 0;
-       display_value = 0;
-       break;
+    case 9:
+     if (step == 0 && numbers > 0)
+     {
+      num1 = numbers;
+      numbers = 0;
+      display_value = 0;
+      step = 1;
+     }
+     else if (step == 1 && numbers > 0)
+     {
+       display_value = num1 + numbers;
+       step = 2;
+     }
 
-     case 9:
-      if (step == 0 && numbers > 0)
-      {
-       num1 = numbers;
-       numbers = 0;
-       display_value = 0;
-       step = 1;
-      }
-      else if (step == 1 && numbers > 0)
-      {
-        display_value = num1 + numbers;
-        step = 2;
-      }
-
-      break;
-    }
-    state = 0;
+     break;
    }
-
-   sevseg_display_modify(display_value);
+   state = 0;
   }
+
+  sevseg_display_modify(display_value);
  }
+}
 
- void Init_GPIO_RGB(void)
- {
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) )), 0x00001000, 0x1UL);
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) )), 0x00002000, 0x1UL);
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) )), 0x00004000, 0x1UL);
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((12)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((13)<<2)))) = 1;(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((14)<<2)))) = 1;
- }
- void display_light_blue(void)
- {
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((12)<<2)))) = 0;
- }
+void Init_GPIO_RGB(void)
+{
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) )), 0x00001000, 0x1UL);
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) )), 0x00002000, 0x1UL);
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) )), 0x00004000, 0x1UL);
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((12)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((13)<<2)))) = 1;(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((14)<<2)))) = 1;
+}
+void display_light_blue(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((12)<<2)))) = 0;
+}
 
- void display_light_green(void)
- {
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((13)<<2)))) = 0;
- }
+void display_light_green(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((13)<<2)))) = 0;
+}
 
- void display_light_red(void)
- {
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((14)<<2)))) = 0;
- }
+void display_light_red(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((14)<<2)))) = 0;
+}
 
- void all_off(void)
- {
-  (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((12)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((13)<<2)))) = 1;(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((14)<<2)))) = 1;
- }
+void all_off(void)
+{
+ (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((12)<<2)))) = 1; (*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((13)<<2)))) = 1;(*((volatile uint32_t *)(((((( uint32_t)0x50000000) + 0x4000) + 0x0200)+(0x40*(0))) + ((14)<<2)))) = 1;
+}
 
- _Bool is_prime(int number)
- {
-  if (number <= 1)
-     return 0;
+_Bool is_prime(int number)
+{
+ if (number <= 1)
+    return 0;
 
 
-   for (int i = 2; i < number; i++)
-     if (number % i == 0)
-       return 0;
+  for (int i = 2; i < number; i++)
+    if (number % i == 0)
+      return 0;
 
-   return 1;
- }
+  return 1;
+}
 
- void led_light_determination(int num)
- {
-   _Bool two_dv = (num % 2 == 0);
-   _Bool three_dv = (num % 3 == 0);
-   _Bool is_pr = (is_prime(num));
+void led_light_determination(int num)
+{
+  _Bool two_dv = (num % 2 == 0);
+  _Bool three_dv = (num % 3 == 0);
+  _Bool is_pr = (is_prime(num));
 
+  if (two_dv) display_light_blue();
+  if (three_dv) display_light_green();
+  if (is_pr)
+  {
    if (two_dv) display_light_blue();
-   if (three_dv) display_light_green();
-   if (is_pr)
-   {
-    if (two_dv) display_light_blue();
-    else if (three_dv) display_light_green();
-    display_light_red();
-    Buzz(1);
-   }
- }
-
- void ex4_2(void)
- {
-  int s;
-  int number = 0;
-
-  _Bool is_held = 0;
-  while(1)
-  {
-   s = ScanKey();
-   if (s == 9)
-   {
-    is_held = 1;
-
-    CloseSevenSegment();
-    CLK_SysTickDelay(5000);
-    all_off();
-   }
-   else if(is_held && s == 0)
-   {
-
-
-    is_held = 0;
-
-
-    number = rand() % 100;
-    led_light_determination(number);
-   }
-   else if(s == 8)
-   {
-    number = 0;
-    all_off();
-   }
-
-   if(!is_held)sevseg_display_modify(number);
+   else if (three_dv) display_light_green();
+   display_light_red();
+   Buzz(1);
   }
- }
+}
 
- void Init_EXTINT(void)
+void ex4_2(void)
+{
+ int s;
+ int number = 0;
+
+ _Bool is_held = 0;
+ while(1)
  {
+  s = ScanKey();
+  if (s == 9)
+  {
+   is_held = 1;
+
+   CloseSevenSegment();
+   CLK_SysTickDelay(5000);
+   all_off();
+  }
+  else if(is_held && s == 0)
+  {
 
 
+   is_held = 0;
 
 
+   number = rand() % 100;
+   led_light_determination(number);
+  }
+  else if(s == 8)
+  {
+   number = 0;
+   all_off();
+  }
 
-
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)), 0x00008000, 0x0UL);
-  GPIO_EnableInt(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)), 15, 0x00010000UL);
-  NVIC_EnableIRQ(EINT1_IRQn);
-
-
-  (((GPIO_DBNCECON_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0180))->DBNCECON = ((1ul << 5) | (0x00000010UL) | (0x00000006UL)));
-
-
-  ((((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)))->DBEN |= (0x00008000));
+  if(!is_held)sevseg_display_modify(number);
  }
+}
 
- volatile int g_dir = 0;
-
- void EINT1_IRQHandler(void)
- {
-  ((((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)))->ISRC = (0x00008000));
-  g_dir = 1;
- }
+void Init_EXTINT(void)
+{
 
 
- void SetMode_IQRINT1(void)
- {
-  GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00001000, 0x1UL);
- }
-# 607 "../main.c"
+
+
+
+
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)), 0x00008000, 0x0UL);
+ GPIO_EnableInt(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)), 15, 0x00010000UL);
+ NVIC_EnableIRQ(EINT1_IRQn);
+
+
+ (((GPIO_DBNCECON_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0180))->DBNCECON = ((1ul << 5) | (0x00000010UL) | (0x00000006UL)));
+
+
+ ((((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)))->DBEN |= (0x00008000));
+}
+
+volatile int g_dir = 0;
+
+void EINT1_IRQHandler(void)
+{
+ ((((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0040)))->ISRC = (0x00008000));
+ g_dir = 1;
+}
+
+
+void SetMode_IQRINT1(void)
+{
+ GPIO_SetMode(((GPIO_T *) (((( uint32_t)0x50000000) + 0x4000) + 0x0080)), 0x00001000, 0x1UL);
+}
+
 void chasing_light(void)
 {
  static int pos = 0;
@@ -3356,6 +3360,8 @@ void chasing_light(void)
  else pos = (pos + 3) % 4;
 }
 
+
+
 void lgb_display(int s)
 {
  while(s != 0)
@@ -3366,7 +3372,7 @@ void lgb_display(int s)
    else continue;
  }
 }
-# 656 "../main.c"
+
 void rgb_key(int key)
 {
  static int now = 0;
@@ -3389,37 +3395,37 @@ void ex4_3(void)
  }
 }
 
- int main(void)
+int main(void)
+{
+ int times = 0;
+
+
+ SYS_Init();
+ OpenSevenSegment();
+ OpenKeyPad();
+ buzz_init();
+ GPIO_init();
+ Init_EXTINT();
+
+
+
+ Init_GPIO_RGB();
+ while(1)
  {
-  int times = 0;
+  times = ScanKey();
 
-
-  SYS_Init();
-  OpenSevenSegment();
-  OpenKeyPad();
-  buzz_init();
-  GPIO_init();
-  Init_EXTINT();
-
-
-
-  Init_GPIO_RGB();
-  while(1)
+  if (times == 1) ex3_1();
+  else if (times == 2) ex3_2();
+  else if (times == 3 )ex3_3();
+  if (times == 4)
   {
-   times = ScanKey();
-
-
-
-
-
-
-   if (times == 1)
-   {
-    while(ScanKey() != 0);
-    ex4_1();
-   }
-   else if (times == 2) ex4_2();
-   else if (times == 3) ex4_3();
-   else continue;
+   while(ScanKey() != 0);
+   ex4_1();
   }
+  else if (times == 5) ex4_2();
+  else if (times == 6) ex4_3();
+
+
+  else continue;
  }
+}
